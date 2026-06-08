@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 220 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 10%;
+
+    --primary: 168 80% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 220 25% 10%;
+
+    --muted: 210 15% 93%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 168 60% 92%;
+    --accent-foreground: 168 80% 20%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 168 80% 36%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  .dark {
+    --background: 220 25% 6%;
+    --foreground: 210 20% 95%;
+    --card: 220 25% 9%;
+    --card-foreground: 210 20% 95%;
+    --popover: 220 25% 9%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 168 80% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 20% 14%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 220 15% 16%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 168 40% 15%;
+    --accent-foreground: 168 60% 80%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 168 80% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+/* ──────────────────────────────────────────────────────────────
+   Landing Page Design System (scoped with lp- prefix)
+   ────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --lp-primary: hsl(168, 80%, 36%);
+  --lp-primary-light: hsl(168, 80%, 42%);
+  --lp-primary-faint: hsl(168, 60%, 92%);
+  --lp-foreground: hsl(220, 25%, 10%);
+  --lp-muted: hsl(220, 10%, 46%);
+  --lp-background: hsl(210, 20%, 98%);
+  --lp-card: hsl(0, 0%, 100%);
+  --lp-border: hsl(220, 13%, 91%);
+}
+
+.lp-root {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--lp-background);
+  color: var(--lp-foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scroll reveal */
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.lp-reveal.lp-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade-up animations */
+@keyframes lpFadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lp-fade-up   { animation: lpFadeUp 0.7s ease-out 0.0s both; }
+.lp-fade-up-1 { animation: lpFadeUp 0.7s ease-out 0.1s both; }
+.lp-fade-up-2 { animation: lpFadeUp 0.7s ease-out 0.2s both; }
+.lp-fade-up-3 { animation: lpFadeUp 0.7s ease-out 0.3s both; }
+.lp-fade-up-4 { animation: lpFadeUp 0.7s ease-out 0.4s both; }
+
+/* Float animation */
+@keyframes lpFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+.lp-float       { animation: lpFloat 5s ease-in-out infinite; }
+.lp-float-delay { animation: lpFloat 7s ease-in-out 1s infinite; }
+
+/* Badge pill */
+.lp-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--lp-border);
+  background: var(--lp-card);
+  color: var(--lp-muted);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* Card hover */
+.lp-card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.lp-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px -8px hsl(168, 80%, 36%, 0.15);
+  border-color: hsl(168, 80%, 70%);
+}
