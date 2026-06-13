@@ -6,34 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Loader2, ArrowLeft, KeyRound, MailCheck } from "lucide-react";
+import { hashPassword } from "@/utils/crypto";
+import { StoredUser } from "@/types/user";
+import { UserService } from "@/services/UserService";
 
-const STORAGE_KEY = "squadfinder_users";
 const RESET_TOKENS_KEY = "squadfinder_reset_tokens";
-
-interface StoredUser {
-  id: string;
-  email: string;
-  passwordHash: string;
-  name: string;
-  profileType: "empresa" | "estudante";
-  habilidades?: string[];
-}
 
 interface ResetToken {
   email: string;
   token: string;
   expiresAt: number;
 }
-
-const hashPassword = (password: string): string => {
-  let hash = 0;
-  for (let i = 0; i < password.length; i++) {
-    const char = password.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return hash.toString(16);
-};
 
 const generateToken = (): string => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -62,7 +45,7 @@ const ForgotPassword = () => {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 600)); // simula latência
 
-    const users: StoredUser[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const users: StoredUser[] = UserService.getUsers();
     const userExists = users.some((u) => u.email.toLowerCase() === email.toLowerCase());
 
     if (!userExists) {
@@ -143,7 +126,7 @@ const ForgotPassword = () => {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 500));
 
-    const users: StoredUser[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const users: StoredUser[] = UserService.getUsers();
     const userIndex = users.findIndex((u) => u.email.toLowerCase() === email.toLowerCase());
 
     if (userIndex === -1) {
@@ -153,7 +136,7 @@ const ForgotPassword = () => {
     }
 
     users[userIndex].passwordHash = hashPassword(newPassword);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+    UserService.saveUsers(users);
 
     // Remove o token usado
     const resetTokens: ResetToken[] = JSON.parse(localStorage.getItem(RESET_TOKENS_KEY) || "[]")
