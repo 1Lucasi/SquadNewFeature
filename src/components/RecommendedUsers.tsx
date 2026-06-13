@@ -1,8 +1,5 @@
-import { useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { UserService } from "@/services/UserService";
-import { calculateMatch } from "@/utils/matchCalculator";
-import { User } from "@/types/user";
+import { useRecommendedUsers, RankedUser } from "@/hooks/useRecommendedUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -10,14 +7,6 @@ import { Building2, GraduationCap, Sparkles, Users } from "lucide-react";
 
 // ── Tipos ────────────────────────────────────────────────────────────────────
 
-interface RankedUser extends User {
-  score: number;
-  commonSkills: string[];
-  label: string;
-  color: string;
-  bgColor: string;
-  textColor: string;
-}
 
 // ── Sub-componente: barra de compatibilidade ─────────────────────────────────
 
@@ -145,21 +134,7 @@ const UserCard = ({ ranked }: UserCardProps) => {
 
 const RecommendedUsers = () => {
   const { user } = useAuth();
-
-  const ranked = useMemo<RankedUser[]>(() => {
-    if (!user) return [];
-
-    const storedUsers = UserService.getUsers();
-
-    return storedUsers
-      .filter(u => u.id !== user.id)
-      .map(u => {
-        const match = calculateMatch(user, u);
-        return { ...u, ...match } as RankedUser;
-      })
-      .filter(u => u.score > 50)
-      .sort((a, b) => b.score - a.score);
-  }, [user]);
+  const ranked = useRecommendedUsers();
 
   if (!user) return null;
 
